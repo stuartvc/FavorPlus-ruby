@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  
+  get :login, controller: 'application'
+  get :loginVerification, controller: 'application'
+  get :awsVerification, controller: 'application'
+
   resources :friendships, only: [:index, :create]
   resource :friendships, only: [:destroy]
   resources :users, except: [:new, :edit]
