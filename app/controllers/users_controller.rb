@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  skip_before_action :authenticate_user_with_token, :only => [:create]
+  before_action :set_user, only: [:show]
 
   # GET /users
   # GET /users.json
@@ -54,6 +55,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:email, :password, :firstName, :lastName, :auth_token)
+      params.require(:user).permit(:email, :password, :firstName, :lastName)
     end
 end
