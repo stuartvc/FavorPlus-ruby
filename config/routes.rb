@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :friendships, only: [:index, :create]
   resource :friendships, only: [:destroy]
   resources :users, except: [:new, :edit]
+  resources :transactions, except: [:new, :edit, :update]
+
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
