@@ -12,7 +12,7 @@ class TransactionsController < ApplicationController
   # GET /transactions/1
   # GET /transactions/1.json
   def show
-    render json: @transaction
+    render json: { transaction: @transaction }
   end
 
   # POST /transactions
@@ -21,7 +21,7 @@ class TransactionsController < ApplicationController
     @transaction = @current_user.transactions.build(transaction_params)
     
     if @transaction.save
-      render json: @transaction, status: :created, location: @transaction
+      render json: { transaction: @transaction }, status: :created, location: @transaction
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
