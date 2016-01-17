@@ -16,6 +16,7 @@ group :production do
 end
 
 
+gem 'active_model_serializers', '~> 0.9'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

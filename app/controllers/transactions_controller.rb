@@ -6,13 +6,13 @@ class TransactionsController < ApplicationController
   def index
     @transactions = @current_user.transactions + @current_user.inverse_transactions
 
-    render json: { transactions: @transactions }
+    render json: @transactions
   end
 
   # GET /transactions/1
   # GET /transactions/1.json
   def show
-    render json: { transaction: @transaction }
+    render json: @transaction
   end
 
   # POST /transactions
@@ -21,7 +21,7 @@ class TransactionsController < ApplicationController
     @transaction = @current_user.transactions.build(transaction_params)
     
     if @transaction.save
-      render json: { transaction: @transaction }, status: :created, location: @transaction
+      render json: @transaction, status: :created, location: @transaction
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class TransactionsController < ApplicationController
     @transactions = Transaction.where(:user_id => @current_user.id, :friend_id => params[:friend_id]) +
                     Transaction.where(:user_id => params[:friend_id] , :friend_id =>@current_user.id)
 
-    render json: { transactions: @transactions }
+    render json: @transactions
   end
 
   private

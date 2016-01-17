@@ -5,7 +5,7 @@ class FriendshipsController < ApplicationController
   def index
     @friends = @current_user.friends
 
-    render json: { users: @friends }
+    render json: @friends
   end
 
   # POST /friendships

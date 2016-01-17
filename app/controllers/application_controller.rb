@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
 
 	include ActionController::HttpAuthentication::Basic::ControllerMethods
 	include ActionController::HttpAuthentication::Token::ControllerMethods
+	include ActionController::Serialization
 
 	before_action :authenticate_user_with_token, except: [:login]
 
