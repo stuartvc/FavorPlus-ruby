@@ -35,6 +35,13 @@ class TransactionsController < ApplicationController
     head :no_content
   end
 
+  def friendsTransactions
+    @transactions = Transaction.where(:user_id => @current_user.id, :friend_id => params[:friend_id]) +
+                    Transaction.where(:user_id => params[:friend_id] , :friend_id =>@current_user.id)
+
+    render json: { transactions: @transactions }
+  end
+
   private
 
     def set_transaction
