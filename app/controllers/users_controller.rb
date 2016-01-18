@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   def home
     @friendships = @current_user.friendships
 
-    render json: @friendships
+    render json: @friendships, :root => 'friendships'
   end
 
   private
