@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: { token: @user.auth_token }, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -44,6 +44,12 @@ class UsersController < ApplicationController
     @user.destroy
 
     head :no_content
+  end
+
+  def home
+    @friendships = @current_user.friendships
+
+    render json: @friendships
   end
 
   private

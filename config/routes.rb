@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get '/users/:friend_id/transactions' => 'transactions#friendsTransactions'
 
+  get :home, controller: 'users'
+
   resources :friendships, only: [:index, :create]
   resource :friendships, only: [:destroy]
   resources :users, except: [:new, :edit]
