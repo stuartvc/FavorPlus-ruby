@@ -13,7 +13,7 @@ class FriendshipsController < ApplicationController
   def create
     @user = User.find_by(:email => friendship_params[:email])
     if @user.nil?
-      render json: { error: "cannot find email"}, status: 400
+      render json: { error: "Cannot find user with specified email"}, status: 400
     else
       id = @user.firstName
       if Friendship.exists?(:user_id => @current_user.id, :friend_id => @user.id)
