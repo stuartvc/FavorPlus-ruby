@@ -11,20 +11,26 @@ class FriendshipsController < ApplicationController
   # POST /friendships
   # POST /friendships.json
   def create
-    if Friendship.exists?(:user_id => @current_user.id, :friend_id => friendship_params[:friend_id])
-      render json: { error: 'Already Friends'}, status: 400
+    @user = User.find_by(:email => friendship_params[:email])
+    if @user.nil?
+      render json: { error: "cannot find email"}, status: 400
     else
-      @friendship = @current_user.friendships.build(friendship_params)
-      if @friendship.save
-        @friend_user = @friendship.friend
-        @inverse_friendship = @friend_user.friendships.build(:friend_id => @current_user.id)
-        if @inverse_friendship.save
-          render json: @friendship, status: :created
-        else
-        render json: @inverse_friendship.errors, status: :unprocessable_entity
-        end
+      id = @user.firstName
+      if Friendship.exists?(:user_id => @current_user.id, :friend_id => @user.id)
+        render json: { error: 'Already Friends'}, status: 400
       else
-        render json: @friendship.errors, status: :unprocessable_entity
+        @friendship = @current_user.friendships.build(:friend_id => @user.id)
+        if @friendship.save
+          @friend_user = @friendship.friend
+          @inverse_friendship = @friend_user.friendships.build(:friend_id => @current_user.id)
+          if @inverse_friendship.save
+            render json: @friendship, status: :created
+          else
+          render json: @inverse_friendship.errors, status: :unprocessable_entity
+          end
+        else
+          render json: @friendship.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -43,6 +49,6 @@ class FriendshipsController < ApplicationController
   private
 
     def friendship_params
-      params.require(:friendship).permit(:friend_id)
+      params.require(:friendship).permit(:friend_id, :email)
     end
 end
