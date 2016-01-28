@@ -44,14 +44,14 @@ class UsersController < ApplicationController
     if @current_user.update(user_params)
       head :no_content
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @current_user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    @current_user.destroy
 
     head :no_content
   end
