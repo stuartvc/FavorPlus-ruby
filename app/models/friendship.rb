@@ -15,4 +15,13 @@ class Friendship < ActiveRecord::Base
     end
     return @transaction_total
   end
+
+    def self.json_me(friendships, has_more)
+      {
+        friendship_list:  {
+          friendships:  ActiveModel::ArraySerializer.new(friendships, each_serializer: FriendshipSerializer, root: false),
+          has_more: has_more
+        }
+      }
+    end
 end

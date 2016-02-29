@@ -4,9 +4,13 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.json
   def index
-    @transactions = @current_user.transactions + @current_user.inverse_transactions
+    @allTransactions = @current_user.transactions + @current_user.inverse_transactions
 
-    render json: @transactions
+    current_page = params.fetch(:page, 1).to_f
+    @transactions = @allTransactions.slice((current_page - 1) * WillPaginate.per_page, (current_page * WillPaginate.per_page) - 1) || []
+    has_more = @allTransactions.size >= current_page * WillPaginate.per_page
+
+    to_json(@transactions, has_more)
   end
 
   # GET /transactions/1
@@ -36,13 +40,26 @@ class TransactionsController < ApplicationController
   end
 
   def friendsTransactions
-    @transactions = Transaction.where(:user_id => @current_user.id, :friend_id => params[:friend_id]) +
+    @allTransactions = Transaction.where(:user_id => @current_user.id, :friend_id => params[:friend_id]) +
                     Transaction.where(:user_id => params[:friend_id] , :friend_id =>@current_user.id)
 
-    render json: @transactions
+    current_page = params.fetch(:page, 1).to_f
+    @transactions = @allTransactions.slice((current_page - 1) * WillPaginate.per_page, (current_page * WillPaginate.per_page) - 1) || []
+    has_more = @allTransactions.size >= current_page * WillPaginate.per_page
+
+    to_json(@transactions, has_more)
   end
 
   private
+
+    def to_json(transactions, has_more)
+      render json: {
+        transaction_list:  {
+          transactions:  ActiveModel::ArraySerializer.new(transactions, each_serializer: TransactionSerializer, root: false),
+          has_more: has_more
+        }
+      }
+    end
 
     def set_transaction
       @transaction = Transaction.find(params[:id])

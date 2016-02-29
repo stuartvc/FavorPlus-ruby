@@ -3,9 +3,11 @@ class FriendshipsController < ApplicationController
   # GET /friendships
   # GET /friendships.json
   def index
-    @friends = @current_user.friends
+    current_page = params.fetch(:page, 1).to_f
+    @friends = @current_user.friends.paginate(:page => current_page)
+    has_more = (@friends.total_pages > current_page)
 
-    render json: @friends, :root => 'users'
+    to_json(@friends, has_more)
   end
 
   # POST /friendships
@@ -47,6 +49,15 @@ class FriendshipsController < ApplicationController
   end
 
   private
+
+    def to_json(friendships, has_more)
+      render json: {
+        friendship_list:  {
+          friendships:  ActiveModel::ArraySerializer.new(friendships, each_serializer: UserSerializer, root: false),
+          has_more: has_more
+        }
+      }
+    end
 
     def friendship_params
       params.require(:friendship).permit(:friend_id, :email)

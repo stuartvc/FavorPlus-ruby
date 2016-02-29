@@ -5,9 +5,11 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    current_page = params.fetch(:page, 1).to_f
+    @users = User.paginate(:page => params.fetch(:page, 1))
+    has_more = (@users.total_pages > current_page)
 
-    render json: @users
+    to_json(@users, has_more);
   end
 
   # GET /users/1
@@ -57,18 +59,29 @@ class UsersController < ApplicationController
   end
 
   def home
-    @friendships = @current_user.friendships
+    current_page = params.fetch(:page, 1).to_f
+    @friendships = @current_user.friendships.paginate(:page => current_page)
+    has_more = @current_user.friendships.size >= current_page * WillPaginate.per_page
 
-    render json: @friendships, :root => 'friendships'
+    render json: Friendship.json_me(@friendships, has_more);
   end
 
   private
+
+    def to_json(users, has_more)
+      render json: {
+        user_list:  {
+          users:  ActiveModel::ArraySerializer.new(users, each_serializer: UserSerializer, root: false),
+          has_more: has_more
+        }
+      }
+    end
 
     def set_user
       @user = User.find(params[:id])
     end
 
     def user_params
-      params.require(:user).permit(:email, :password, :firstName, :lastName)
+      params.require(:user).permit(:email, :password, :firstName, :lastName, :page)
     end
 end

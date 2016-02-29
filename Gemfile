@@ -7,6 +7,8 @@ gem 'rails-api'
 
 gem 'spring', :group => :development
 
+gem 'will_paginate', '~> 3.0.6'
+
 
 group :development, :test do
 	gem 'sqlite3'
