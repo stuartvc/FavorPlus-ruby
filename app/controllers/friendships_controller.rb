@@ -52,8 +52,8 @@ class FriendshipsController < ApplicationController
 
     def to_json(friendships, has_more)
       render json: {
-        friendship_list:  {
-          friendships:  ActiveModel::ArraySerializer.new(friendships, each_serializer: UserSerializer, root: false),
+        user_list:  {
+          users:  ActiveModel::ArraySerializer.new(friendships, each_serializer: UserSerializer, root: false),
           has_more: has_more
         }
       }
