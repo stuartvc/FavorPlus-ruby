@@ -53,8 +53,10 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    multi_json (1.11.2)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    oj (2.12.14)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -87,6 +89,8 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.5.0)
+    rollbar (2.8.3)
+      multi_json
     spring (1.6.4)
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
@@ -107,9 +111,11 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.9)
+  oj (~> 2.12.14)
   pg
   rails (= 4.2.5)
   rails-api
+  rollbar (~> 2.8.1)
   spring
   sqlite3
   will_paginate (~> 3.0.6)

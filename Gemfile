@@ -9,6 +9,9 @@ gem 'spring', :group => :development
 
 gem 'will_paginate', '~> 3.0.6'
 
+gem 'rollbar', '~> 2.8.1'
+
+gem 'oj', '~> 2.12.14'
 
 group :development, :test do
 	gem 'sqlite3'
