@@ -3,9 +3,12 @@ class FriendshipsController < ApplicationController
   # GET /friendships
   # GET /friendships.json
   def index
-    current_page = params.fetch(:page, 1).to_f
-    @friends = @current_user.friends.paginate(:page => current_page)
-    has_more = (@friends.total_pages > current_page)
+    #current_page = params.fetch(:page, 1).to_f
+    #@friends = @current_user.friends.paginate(:page => current_page)
+    #has_more = (@friends.total_pages > current_page)
+
+    @friends = @current_user.friends
+    has_more = false
 
     to_json(@friends, has_more)
   end
